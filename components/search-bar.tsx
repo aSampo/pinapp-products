@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2, Search, X } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Loader2, Search } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -10,6 +10,7 @@ export default function SearchBar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
   const initialQuery = searchParams.get('q') || '';
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [isSearching, setIsSearching] = useState(false);
@@ -21,7 +22,7 @@ export default function SearchBar() {
     const timer = setTimeout(() => {
       updateSearchParams(searchTerm);
       setIsSearching(false);
-    }, 500); // 500ms debounce
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -38,13 +39,10 @@ export default function SearchBar() {
       params.delete('q');
     }
 
-    router.push(`${pathname}?${params.toString()}`);
-  };
+    queryClient.cancelQueries({ queryKey: ['products'] });
+    queryClient.removeQueries({ queryKey: ['products'] });
 
-  // Clear search
-  const clearSearch = () => {
-    setSearchTerm('');
-    updateSearchParams('');
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -53,18 +51,12 @@ export default function SearchBar() {
         {isSearching ? <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" /> : <Search className="h-4 w-4 text-muted-foreground" />}
       </div>
       <Input
-        type="search"
+        type="text"
         placeholder="Buscar por SKU o nombre del producto..."
         className="pl-10 pr-10"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {searchTerm && (
-        <Button variant="ghost" size="sm" className="absolute inset-y-0 right-0 px-3" onClick={clearSearch}>
-          <X className="h-4 w-4" />
-          <span className="sr-only">Limpiar búsqueda</span>
-        </Button>
-      )}
     </div>
   );
 }
