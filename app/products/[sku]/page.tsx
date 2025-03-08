@@ -6,7 +6,15 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
-export default async function ProductPage({ params }: { params: { sku: string } }) {
+type Params = Promise<{ sku: string }>;
+
+export default async function ProductPage(props: { params: Params }) {
+  const params = await props.params;
+
+  if (!params.sku) {
+    notFound();
+  }
+
   const product = await getProductBySku(params.sku);
 
   if (!product) {
