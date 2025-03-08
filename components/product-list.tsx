@@ -1,9 +1,9 @@
 'use client';
 
+import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { useProductSearch } from '@/hooks/use-product-search';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
 import ProductCard from './product-card';
 import { ProductListError } from './product-list-error';
 import { ProductListSkeleton } from './skeletons';
@@ -11,40 +11,21 @@ import { ProductListSkeleton } from './skeletons';
 export default function ProductList() {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, error, refetch, isRefetching } = useProductSearch(searchTerm);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch, isRefetching } = useProductSearch(searchTerm);
 
-  useEffect(() => {
-    if (loadMoreRef.current) {
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          const [entry] = entries;
-          if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-            fetchNextPage();
-          }
-        },
-        { threshold: 0.1 }
-      );
-
-      observerRef.current.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const loadMoreRef = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    onLoadMore: fetchNextPage
+  });
 
   if (status === 'pending') {
     return <ProductListSkeleton />;
   }
 
   if (status === 'error') {
-    //TODO Check this
-    return <ProductListError error={error as Error} isRefetching={isRefetching} onRetry={() => refetch()} />;
+    return <ProductListError isRefetching={isRefetching} refetch={refetch} />;
   }
 
   const allProducts = data.pages.flatMap((page) => page.products);

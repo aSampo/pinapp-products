@@ -1,49 +1,11 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, Search } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useSearchBar } from '../hooks/use-search-bar';
 
 export default function SearchBar() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
-  const initialQuery = searchParams.get('q') || '';
-  const [searchTerm, setSearchTerm] = useState(initialQuery);
-  const [isSearching, setIsSearching] = useState(false);
-
-  useEffect(() => {
-    if (searchTerm === initialQuery) return;
-
-    setIsSearching(true);
-    const timer = setTimeout(() => {
-      updateSearchParams(searchTerm);
-      setIsSearching(false);
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-      setIsSearching(false);
-    };
-  }, [searchTerm, initialQuery]);
-
-  const updateSearchParams = (term: string) => {
-    const params = new URLSearchParams(searchParams);
-
-    if (term) {
-      params.set('q', term);
-    } else {
-      params.delete('q');
-    }
-
-    queryClient.cancelQueries({ queryKey: ['products'] });
-    queryClient.removeQueries({ queryKey: ['products'] });
-
-    router.push(`${pathname}?${params.toString()}`);
-  };
+  const { searchTerm, isSearching, setSearchTerm } = useSearchBar();
 
   return (
     <div className="relative">

@@ -7,7 +7,7 @@ export function useProductSearch(searchTerm: string) {
     queryFn: ({ pageParam = 1 }) => getProducts(searchTerm, pageParam as number),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => (lastPage.hasMore ? allPages.length + 1 : undefined),
-    retry: 3,
+    retry: 1,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
 
