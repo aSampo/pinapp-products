@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
-type Params = { sku: string };
+type Params = Promise<{ sku: string }>;
 
 export default async function ProductPage(props: { params: Params }) {
-  const params = props.params;
+  const params = await props.params;
 
   if (!params.sku) {
     notFound();
@@ -36,7 +36,8 @@ export default async function ProductPage(props: { params: Params }) {
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const product = await getProductBySku(params.sku);
+  const resolvedParams = await params;
+  const product = await getProductBySku(resolvedParams.sku);
 
   if (!product) {
     return {
