@@ -66,6 +66,9 @@ npm start
 
 **Importante:** Para utilizar el servidor local, debes modificar el archivo `.env.local` y cambiar la URL de la API a `http://localhost:8080`.
 
+Puedes encontrar el código de la API en el repositorio:
+[https://github.com/aSampo/pinapp-products-api](https://github.com/aSampo/pinapp-products-api)
+
 La API utiliza JSON Server y Faker.js para generar datos de prueba. Los endpoints disponibles son:
 
 - `GET /products` - Obtener todos los productos
