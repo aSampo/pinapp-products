@@ -1,10 +1,8 @@
-# PinApp Products - Desafío Frontend Senior
-
-## Descripción
+# PinApp Products - Challenge Frontend Senior
 
 Code challenge para PinApp. La aplicación permite visualizar un catálogo de productos, realizar búsquedas y ver detalles específicos de cada producto.
 
-## Tecnologías Utilizadas
+## 🚀 Tecnologías Utilizadas
 
 - Next.js
 - TypeScript
@@ -14,7 +12,7 @@ Code challenge para PinApp. La aplicación permite visualizar un catálogo de pr
 - JSON Server
 - Faker.js
 
-## Características Principales
+## 🌟 Características Principales
 
 ### Página de Listado de Productos (PLP)
 
@@ -39,7 +37,7 @@ Code challenge para PinApp. La aplicación permite visualizar un catálogo de pr
   - Mensaje "No encontrado" para errores 404
   - Mensaje "No se pudo cargar" para errores 500
 
-## Instalación
+## 💻 Instalación
 
 ```bash
 # Clonar el repositorio
@@ -53,26 +51,7 @@ npm install
 npm run dev
 ```
 
-## Estructura del Proyecto
-
-pinapp-products/
-├── app/ # Rutas y páginas (App Router)
-│ ├── products/ # Ruta para detalles de productos
-│ │ └── [sku]/ # Ruta dinámica para cada producto
-│ ├── page.tsx # Página principal
-│ └── layout.tsx # Layout principal
-├── components/ # Componentes reutilizables
-│ ├── ui/ # Componentes de UI (Shadcn)
-│ ├── product-card.tsx # Card de producto
-│ ├── product-detail.tsx # Detalle de producto
-│ ├── product-list.tsx # Lista de productos
-│ ├── search-bar.tsx # Barra de búsqueda
-│ └── skeletons.tsx # Componentes de carga
-├── hooks/ # Hooks personalizados
-├── lib/ # Utilidades y configuraciones
-└── public/ # Archivos estáticos
-
-## API
+## 🔌 API
 
 La aplicación consume datos de una API desplegada en Render https://pinapp-products-api.onrender.com/, que simula los endpoints descritos en el archivo OpenAPI. Esto permite probar la aplicación sin necesidad de correr localmente el server.
 
@@ -90,7 +69,7 @@ La API utiliza JSON Server y Faker.js para generar datos de prueba. Los endpoint
 - `GET /products` - Obtener todos los productos
 - `GET /products/:id` - Obtener un producto por ID
 
-## Despliegue
+## 🚀 Despliegue
 
 La aplicación está desplegada en Vercel y pueden a acceder a través de:
 
