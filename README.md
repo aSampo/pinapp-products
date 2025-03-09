@@ -64,6 +64,8 @@ npm install
 npm start
 ```
 
+**Importante:** Para utilizar el servidor local, debes modificar el archivo `.env.local` y cambiar la URL de la API a `http://localhost:8080`.
+
 La API utiliza JSON Server y Faker.js para generar datos de prueba. Los endpoints disponibles son:
 
 - `GET /products` - Obtener todos los productos
