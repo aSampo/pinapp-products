@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PinApp Products - Desafío Frontend Senior
 
-## Getting Started
+## Descripción
 
-First, run the development server:
+Code challenge para PinApp. La aplicación permite visualizar un catálogo de productos, realizar búsquedas y ver detalles específicos de cada producto.
+
+## Tecnologías Utilizadas
+
+- Next.js
+- TypeScript
+- TailwindCSS
+- Shadcn UI
+- React Query
+- JSON Server
+- Faker.js
+
+## Características Principales
+
+### Página de Listado de Productos (PLP)
+
+- Ruta: `/`
+- Búsqueda por código SKU o nombre de producto con debounce de 500ms
+- Visualización de información básica: SKU, categoría, marca y precio
+- Botón "Ver Detalle" para navegar a la página de detalle
+- Indicador de carga durante la búsqueda
+
+### Página de Detalle de Producto (PDP)
+
+- Ruta: `/products/:sku`
+- Visualización completa de la información del producto:
+  - Nombre del producto
+  - Código SKU
+  - Imagen principal
+  - Categoría
+  - Marca
+  - Precio de lista
+  - Especificaciones técnicas
+- Manejo de errores:
+  - Mensaje "No encontrado" para errores 404
+  - Mensaje "No se pudo cargar" para errores 500
+
+## Instalación
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/tu-usuario/pinapp-products.git
+cd pinapp-products
+
+# Instalar dependencias
+npm install
+
+# Iniciar el servidor de desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estructura del Proyecto
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+pinapp-products/
+├── app/ # Rutas y páginas (App Router)
+│ ├── products/ # Ruta para detalles de productos
+│ │ └── [sku]/ # Ruta dinámica para cada producto
+│ ├── page.tsx # Página principal
+│ └── layout.tsx # Layout principal
+├── components/ # Componentes reutilizables
+│ ├── ui/ # Componentes de UI (Shadcn)
+│ ├── product-card.tsx # Card de producto
+│ ├── product-detail.tsx # Detalle de producto
+│ ├── product-list.tsx # Lista de productos
+│ ├── search-bar.tsx # Barra de búsqueda
+│ └── skeletons.tsx # Componentes de carga
+├── hooks/ # Hooks personalizados
+├── lib/ # Utilidades y configuraciones
+└── public/ # Archivos estáticos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API
 
-## Learn More
+La aplicación consume datos de una API desplegada en Render https://pinapp-products-api.onrender.com/, que simula los endpoints descritos en el archivo OpenAPI. Esto permite probar la aplicación sin necesidad de correr localmente el server.
 
-To learn more about Next.js, take a look at the following resources:
+Si deseas ejecutar la API localmente, puedes clonar el repositorio:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git clone https://github.com/aSampo/pinapp-products-api.git
+cd pinapp-products-api
+npm install
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+La API utiliza JSON Server y Faker.js para generar datos de prueba. Los endpoints disponibles son:
 
-## Deploy on Vercel
+- `GET /products` - Obtener todos los productos
+- `GET /products/:id` - Obtener un producto por ID
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Despliegue
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+La aplicación está desplegada en Vercel y pueden a acceder a través de:
+
+[https://pinapp-products.vercel.app](https://pinapp-products.vercel.app)
