@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
-type Params = Promise<{ sku: string }>;
+type Params = { sku: string };
 
 export default async function ProductPage(props: { params: Params }) {
-  const params = await props.params;
+  const params = props.params;
 
   if (!params.sku) {
     notFound();
@@ -33,4 +33,23 @@ export default async function ProductPage(props: { params: Params }) {
       <ProductDetail product={product} />
     </main>
   );
+}
+
+export async function generateMetadata({ params }: { params: Params }) {
+  const product = await getProductBySku(params.sku);
+
+  if (!product) {
+    return {
+      title: 'Producto no encontrado',
+      description: 'El producto que buscas no existe'
+    };
+  }
+
+  return {
+    title: `${product.name} | PinApp Products`,
+    description: product.description,
+    openGraph: {
+      images: [{ url: product.image }]
+    }
+  };
 }
