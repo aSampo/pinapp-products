@@ -5,7 +5,6 @@ import { Loader2 } from 'lucide-react';
 import { Product } from '../lib/types';
 import ProductCard from './product-card';
 import { ProductListError } from './product-list-error';
-import { ProductListSkeleton } from './skeletons';
 
 interface ProductListProps {
   initialData: {
@@ -17,20 +16,13 @@ interface ProductListProps {
 }
 
 export default function ProductList({ initialData, searchTerm }: ProductListProps) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch, isRefetching, isFetching } = useProductSearch(
-    searchTerm,
-    initialData
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch, isRefetching } = useProductSearch(searchTerm, initialData);
 
   const loadMoreRef = useInfiniteScroll({
     hasNextPage,
     isFetchingNextPage,
     onLoadMore: fetchNextPage
   });
-
-  if (isFetching) {
-    return <ProductListSkeleton />;
-  }
 
   if (status === 'error') {
     return <ProductListError isRefetching={isRefetching} refetch={refetch} />;
