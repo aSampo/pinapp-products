@@ -4,8 +4,10 @@ import { getProducts } from '@/lib/api';
 import { Loader2 } from 'lucide-react';
 import { Suspense } from 'react';
 
-export default async function Home({ searchParams }: { searchParams: { q?: string } }) {
-  const searchTerm = searchParams.q || '';
+export default async function Home({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
+  const resolvedSearchParams = await searchParams;
+  const searchTerm = resolvedSearchParams.q ?? '';
+
   const initialData = await getProducts(searchTerm, 1);
 
   return (
