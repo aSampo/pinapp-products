@@ -1,18 +1,26 @@
 'use client';
-
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { useProductSearch } from '@/hooks/use-product-search';
 import { Loader2 } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { Product } from '../lib/types';
 import ProductCard from './product-card';
 import { ProductListError } from './product-list-error';
 import { ProductListSkeleton } from './skeletons';
 
-export default function ProductList() {
-  const searchParams = useSearchParams();
-  const searchTerm = searchParams.get('q') || '';
+interface ProductListProps {
+  initialData: {
+    products: Product[];
+    hasMore: boolean;
+    total: number;
+  };
+  searchTerm: string;
+}
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch, isRefetching } = useProductSearch(searchTerm);
+export default function ProductList({ initialData, searchTerm }: ProductListProps) {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, refetch, isRefetching, isFetching } = useProductSearch(
+    searchTerm,
+    initialData
+  );
 
   const loadMoreRef = useInfiniteScroll({
     hasNextPage,
@@ -20,7 +28,7 @@ export default function ProductList() {
     onLoadMore: fetchNextPage
   });
 
-  if (status === 'pending') {
+  if (isFetching) {
     return <ProductListSkeleton />;
   }
 
